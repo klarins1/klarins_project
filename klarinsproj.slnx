@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CALENDARDL/CALENDARDL.csproj" />
+  <Project Path="CALENDARMODELS/CALENDARMODELS.csproj" />
+  <Project Path="CALENDAR_BL/CALENDARBL.csproj" />
+  <Project Path="klarinsproj/klarinsproj.csproj" />
+</Solution>
