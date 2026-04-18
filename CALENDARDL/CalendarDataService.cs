@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CALENDARMODELS;
 
 namespace CALENDARDL
@@ -25,21 +22,25 @@ namespace CALENDARDL
 
         public void ShowEvents()
         {
+            events = jsonProvider.LoadFromFile();
+
             if (events.Count == 0)
             {
-                Console.WriteLine("NO EVENTS SHOW");
+                Console.WriteLine("No events found.");
                 return;
             }
-            foreach (var eventss in events)
+
+            Console.WriteLine("================================");
+
+            foreach (var ev in events)
             {
-                {
-                    Console.WriteLine($"Event: {eventss.name}");
-                    Console.WriteLine($"Date: {eventss.date}");
-                    Console.WriteLine("================================");
-                }
+                Console.WriteLine($"Event: {ev.name}");
+                Console.WriteLine($"Date : {ev.date}");
+                Console.WriteLine("================================");
             }
         }
     }
 }
+
 
 

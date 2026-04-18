@@ -8,18 +8,23 @@ namespace CALENDARDL
 {
     public class CalendarJson
     {
-        private string filePath = "calendar_data.json";
+        private string filePath = Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory,
+            "calendar_data.json"
+        );
 
         public void SaveToFile(List<EventModels> events)
         {
             try
             {
-                string jsonString = JsonSerializer.Serialize(events, new JsonSerializerOptions { WriteIndented = true });
+                string jsonString = JsonSerializer.Serialize(events,
+                    new JsonSerializerOptions { WriteIndented = true });
+
                 File.WriteAllText(filePath, jsonString);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine("Error saving file: " + ex.Message);
             }
         }
 
@@ -27,12 +32,15 @@ namespace CALENDARDL
         {
             try
             {
-                if (!File.Exists(filePath)) return new List<EventModels>();
+                if (!File.Exists(filePath))
+                    return new List<EventModels>();
 
                 string jsonString = File.ReadAllText(filePath);
-                return JsonSerializer.Deserialize<List<EventModels>>(jsonString);
+
+                return JsonSerializer.Deserialize<List<EventModels>>(jsonString)
+                       ?? new List<EventModels>();
             }
-            catch (Exception)
+            catch
             {
                 return new List<EventModels>();
             }

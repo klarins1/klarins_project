@@ -1,31 +1,38 @@
 ﻿using CALENDARDL;
 using CALENDARMODELS;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CALENDARBL
 {
     public class CalendarAppService
     {
-        CalendarDB db = new CalendarDB();
+        private CalendarDataService dataService = new CalendarDataService();
 
         public void AddEvent(string name, string date)
         {
-            if (name == " " || date == " ")
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(date))
             {
-                Console.WriteLine("Event Unsuccessfully Added");
+                Console.WriteLine("Event Unsuccessfully Added (empty input)");
                 return;
             }
 
-            EventModels e = new EventModels();
-            e.name = name;
-            e.date = date;
+            if (!DateTime.TryParseExact(date, "MM/dd/yyyy",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out DateTime parsedDate))
+            {
+                Console.WriteLine("Invalid date format. Use MM/dd/yyyy");
+                return;
+            }
 
-            db.AddEvent(e);
+            EventModels e = new EventModels
+            {
+                name = name,
+                date = parsedDate.ToString("MM/dd/yyyy")
+            };
+
+            dataService.AddEvent(e);
 
             Console.WriteLine("Event Successfully Added");
         }
@@ -34,10 +41,7 @@ namespace CALENDARBL
         {
             Console.WriteLine("================================");
             Console.WriteLine("SHOW EVENTS");
-            db.ShowEvents();
+            dataService.ShowEvents();
         }
     }
-
 }
-
-
